@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import classnames from "classnames";
-import { getProjectTask } from "../../../actions/backlogActions";
+import {
+  getProjectTask,
+  updateProjectTask,
+} from "../../../actions/backlogActions";
 import { Link } from "react-router-dom";
 
 class UpdateProjectTask extends Component {
@@ -19,7 +22,7 @@ class UpdateProjectTask extends Component {
       dueDate: "",
       projectIdentifier: "",
       create_At: "",
-      errors: {}
+      errors: {},
     };
 
     this.onChange = this.onChange.bind(this);
@@ -45,7 +48,7 @@ class UpdateProjectTask extends Component {
       priority,
       dueDate,
       projectIdentifier,
-      create_At
+      create_At,
     } = nextProps.project_task;
 
     this.setState({
@@ -57,7 +60,7 @@ class UpdateProjectTask extends Component {
       priority,
       dueDate,
       projectIdentifier,
-      create_At
+      create_At,
     });
   }
 
@@ -77,15 +80,19 @@ class UpdateProjectTask extends Component {
       priority: this.state.priority,
       dueDate: this.state.dueDate,
       projectIdentifier: this.state.projectIdentifier,
-      create_At: this.state.create_At
+      create_At: this.state.create_At,
     };
 
-    console.log(updateProjectTask);
+    this.props.updateProjectTask(
+      this.state.projectIdentifier,
+      this.state.projectSequence,
+      updateProjectTask,
+      this.props.history
+    );
   }
 
   render() {
-    const { project_task } = this.props.match.params;
-    const { backlog_id } = this.props.match.params;
+    const { errors } = this.state;
 
     return (
       <div className="add-PBI">
@@ -93,7 +100,7 @@ class UpdateProjectTask extends Component {
           <div className="row">
             <div className="col-md-8 m-auto">
               <Link
-                to={`/projectBoard/${backlog_id}`}
+                to={`/projectBoard/${this.state.projectIdentifier}`}
                 className="btn btn-light"
               >
                 Back to Project Board
@@ -107,12 +114,17 @@ class UpdateProjectTask extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-                    className="form-control form-control-lg"
+                    className={classnames("form-control form-control-lg", {
+                      "is-invalid": errors.summary,
+                    })}
                     name="summary"
                     placeholder="Project Task summary"
                     value={this.state.summary}
                     onChange={this.onChange}
                   />
+                  {errors.summary && (
+                    <div className="invalid-feedback">{errors.summary}</div>
+                  )}
                 </div>
                 <div className="form-group">
                   <textarea
@@ -176,11 +188,16 @@ class UpdateProjectTask extends Component {
 
 UpdateProjectTask.propTypes = {
   getProjectTask: PropTypes.func.isRequired,
-  project_task: PropTypes.object.isRequired
+  project_task: PropTypes.object.isRequired,
+  updateProjectTask: PropTypes.func.isRequired,
+  errors: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  project_task: state.backlog.project_task
+const mapStateToProps = (state) => ({
+  project_task: state.backlog.project_task,
+  errors: state.errors,
 });
 
-export default connect(mapStateToProps, { getProjectTask })(UpdateProjectTask);
+export default connect(mapStateToProps, { getProjectTask, updateProjectTask })(
+  UpdateProjectTask
+);

@@ -14,7 +14,7 @@ class AddProject extends Component {
       description: "",
       start_date: "",
       end_date: "",
-      errors: {}
+      errors: {},
     };
 
     this.onChange = this.onChange.bind(this);
@@ -39,7 +39,7 @@ class AddProject extends Component {
       projectIdentifier: this.state.projectIdentifier,
       description: this.state.description,
       start_date: this.state.start_date,
-      end_date: this.state.end_date
+      end_date: this.state.end_date,
     };
 
     this.props.createProject(newProject, this.props.history);
@@ -61,7 +61,7 @@ class AddProject extends Component {
                     <input
                       type="text"
                       className={classnames("form-control form-control-lg ", {
-                        "is-invalid": errors.projectName
+                        "is-invalid": errors.projectName,
                       })}
                       placeholder="Project Name"
                       name="projectName"
@@ -78,7 +78,7 @@ class AddProject extends Component {
                     <input
                       type="text"
                       className={classnames("form-control form-control-lg", {
-                        "is-invalid": errors.projectIdentifier
+                        "is-invalid": errors.projectIdentifier,
                       })}
                       placeholder="Unique Project ID"
                       name="projectIdentifier"
@@ -94,7 +94,7 @@ class AddProject extends Component {
                   <div className="form-group">
                     <textarea
                       className={classnames("form-control form-control-lg", {
-                        "is-invalid": errors.description
+                        "is-invalid": errors.description,
                       })}
                       placeholder="Project Description"
                       name="description"
@@ -144,11 +144,11 @@ class AddProject extends Component {
 
 AddProject.propTypes = {
   createProject: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = state => ({
-  errors: state.errors
+const mapStateToProps = (state) => ({
+  errors: state.errors,
 });
 
 export default connect(mapStateToProps, { createProject })(AddProject);
