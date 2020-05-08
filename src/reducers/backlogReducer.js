@@ -3,7 +3,6 @@ import {
   GET_PROJECT_TASK,
   DELETE_PROJECT_TASK,
 } from "../actions/types";
-import { bindActionCreators } from "redux";
 
 const initialState = {
   project_tasks: [],
